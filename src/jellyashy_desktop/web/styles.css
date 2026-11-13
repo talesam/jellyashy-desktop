@@ -686,14 +686,14 @@ html[data-glass="real"] .sidebar.open .side-panel {
 html.touch { font-size: calc(6px + 1.2vmin); }
 /* The lists scroll natively under a finger (nav.ts): the system's own
    scrolling and fling, no transform moving them. */
-html.touch .tscroll {
+html.touch .tscroll, html.platform-linux .tscroll {
   overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain; scrollbar-width: none;
 }
 /* Sideways only: an up or down drag on a rail goes on to the page. */
-html.touch .tscroll.tscroll-x { overflow-x: auto; overflow-y: hidden; overscroll-behavior-y: auto; overscroll-behavior-x: contain; }
-html.touch .tscroll::-webkit-scrollbar { display: none; }
-html.touch .tscroll > .tscroll-inner { transition: none; will-change: auto; }
+html.touch .tscroll.tscroll-x, html.platform-linux .tscroll.tscroll-x { overflow-x: auto; overflow-y: hidden; overscroll-behavior-y: auto; overscroll-behavior-x: contain; }
+html.touch .tscroll::-webkit-scrollbar, html.platform-linux .tscroll::-webkit-scrollbar { display: none; }
+html.touch .tscroll > .tscroll-inner, html.platform-linux .tscroll > .tscroll-inner { transition: none; will-change: auto; }
 html.touch .focusable { -webkit-tap-highlight-color: transparent; }
 html.touch .btn .spinner.small { margin-right: 0.7rem; }
 
