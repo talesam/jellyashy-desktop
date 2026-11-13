@@ -914,6 +914,10 @@ html.platform-linux, html.platform-linux body { background: transparent; }
 html.platform-linux .ambient-veil { background: radial-gradient(120% 90% at 70% 0%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.35) 78%); }
 html.platform-linux .sidebar { padding-top: 0.4rem; }
 html.platform-linux .side-brand { margin-bottom: 5.2rem; }
-html.platform-linux .back-fab { top: calc(1.2rem + 36px); }
+/* The back arrow sits on the title bar's line, at its left end (the window
+   leaves that corner free of its drag area, window.py). */
+html.platform-linux .back-fab { top: 3px; left: 12px; width: 32px; height: 32px; }
+html.platform-linux .back-fab .icon { width: 20px; height: 20px; }
 html.platform-linux .osd-top { padding-right: calc(4.5rem + 150px); }
-html.platform-linux .osd-top .back-fab { top: 0; }
+html.platform-linux .osd-top .back-fab { top: 0; left: 0; width: 4.4rem; height: 4.4rem; }
+html.platform-linux .osd-top .back-fab .icon { width: 2.4rem; height: 2.4rem; }

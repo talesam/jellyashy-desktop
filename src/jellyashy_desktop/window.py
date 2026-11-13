@@ -74,7 +74,8 @@ class JellyAshyWindow(Adw.ApplicationWindow):
         full = Gtk.Button(icon_name="view-fullscreen-symbolic", tooltip_text="F11")
         full.connect("clicked", lambda *_: self._toggle_fullscreen())
         header.pack_end(full)
-        self._titlebar = Gtk.Revealer(child=header, reveal_child=True, valign=Gtk.Align.START,
+        # Its left end stays free: the page's back arrow sits there.
+        self._titlebar = Gtk.Revealer(child=header, reveal_child=True, valign=Gtk.Align.START, margin_start=72,
                                       transition_type=Gtk.RevealerTransitionType.CROSSFADE)
         overlay.add_overlay(self._titlebar)
         self._titlebar_timer = 0
