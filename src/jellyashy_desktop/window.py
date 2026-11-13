@@ -61,20 +61,28 @@ class JellyAshyWindow(Adw.ApplicationWindow):
         self.web = self._make_web(user_agent)
 
         overlay = Gtk.Overlay()
+        overlay.add_css_class("jellyashy-backdrop")
         overlay.set_child(self.video)
         overlay.add_overlay(self.web)
 
-        # A slim title bar to move and close the window; gone in full screen.
-        header = Adw.HeaderBar()
-        header.add_css_class("flat")
+        # No separate title bar: a transparent one floats over the page (the
+        # page keeps its top line clear for it), to move the window and with
+        # its buttons. It hides in full screen and while a video plays, and
+        # comes back when the pointer goes up there.
+        header = Adw.HeaderBar(show_title=False)
+        header.add_css_class("jellyashy-titlebar")
         full = Gtk.Button(icon_name="view-fullscreen-symbolic", tooltip_text="F11")
         full.connect("clicked", lambda *_: self._toggle_fullscreen())
         header.pack_end(full)
-        self._toolbar = Adw.ToolbarView()
-        self._toolbar.add_top_bar(header)
-        self._toolbar.set_content(overlay)
-        self.set_content(self._toolbar)
-        self.connect("notify::fullscreened", lambda *_: self._toolbar.set_reveal_top_bars(not self.is_fullscreen()))
+        self._titlebar = Gtk.Revealer(child=header, reveal_child=True, valign=Gtk.Align.START,
+                                      transition_type=Gtk.RevealerTransitionType.CROSSFADE)
+        overlay.add_overlay(self._titlebar)
+        self._titlebar_timer = 0
+        motion = Gtk.EventControllerMotion()
+        motion.connect("motion", self._on_motion)
+        overlay.add_controller(motion)
+        self.set_content(overlay)
+        self.connect("notify::fullscreened", lambda *_: self._sync_titlebar())
 
         keys = Gtk.ShortcutController()
         keys.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
@@ -191,6 +199,7 @@ class JellyAshyWindow(Adw.ApplicationWindow):
     # ---- the player's news to the page --------------------------------------
 
     def _on_state(self, _video, state: str) -> None:
+        self._sync_titlebar()
         if state != "idle":
             self._run(bridge.event_script({"type": "state", "state": state}))
         self._set_inhibit(state in ("loading", "playing", "buffering"))
@@ -234,6 +243,27 @@ class JellyAshyWindow(Adw.ApplicationWindow):
             self._inhibit = 0
 
     # ---- the window ----------------------------------------------------------
+
+    def _titlebar_wanted(self) -> bool:
+        return not self.is_fullscreen() and not self.video.active
+
+    def _sync_titlebar(self) -> None:
+        self._titlebar.set_reveal_child(self._titlebar_wanted())
+
+    def _on_motion(self, _controller, _x: float, y: float) -> None:
+        if self._titlebar_wanted() or self.is_fullscreen():
+            return
+        # Over a video: the buttons show while the pointer is near the top.
+        if y < 64:
+            self._titlebar.set_reveal_child(True)
+            if self._titlebar_timer:
+                GLib.source_remove(self._titlebar_timer)
+            self._titlebar_timer = GLib.timeout_add(2500, self._hide_titlebar)
+
+    def _hide_titlebar(self) -> bool:
+        self._titlebar_timer = 0
+        self._sync_titlebar()
+        return GLib.SOURCE_REMOVE
 
     def _toggle_fullscreen(self) -> bool:
         if self.is_fullscreen():

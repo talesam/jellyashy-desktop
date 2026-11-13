@@ -317,6 +317,7 @@ html[data-glass="real"] .panel {
 .detail-page .hero-info { top: 9rem; }
 .detail-actions { position: relative; left: 0; top: 0; margin: -6.5rem 0 2.4rem 4.5rem; }
 .tagline { padding: 0 4.5rem; font-size: 1.4rem; font-style: italic; color: var(--fg-2); margin-bottom: 1.2rem; }
+.overview { padding: 0 4.5rem; margin: 0 0 1.4rem; max-width: 72rem; font-size: 1.35rem; line-height: 1.55; color: var(--fg-2); }
 .facts { padding: 0 4.5rem; margin-bottom: 2.4rem; }
 .fact { font-size: 1.25rem; margin-bottom: 0.4rem; }
 .fact-k { color: var(--muted); margin-right: 0.8rem; }
@@ -719,7 +720,7 @@ html.touch .page-header { padding: 0 1.6rem 1.2rem; flex-wrap: wrap; }
 html.touch .page-header h1 { font-size: 2.3rem; }
 html.touch .page-header .btn { margin: 0.4rem 0.6rem 0.4rem 0; }
 html.touch .page-header h1 + .count, html.touch .page-header .count { margin-right: auto; }
-html.touch .pad, html.touch .tagline, html.touch .facts { padding: 0 1.6rem; }
+html.touch .pad, html.touch .tagline, html.touch .overview, html.touch .facts { padding: 0 1.6rem; }
 html.touch .rail-title, html.touch .browse-page .rail-title { margin-left: 1.6rem; }
 html.touch .rail-scroll, html.touch .browse-page .rail-scroll { padding-left: 1.6rem; }
 html.touch .rail-scroll .tscroll-inner.row-x { padding-right: 1.6rem; }
@@ -817,7 +818,7 @@ html.touch .input:focus { border-color: var(--accent); }
 .back-fab .icon { width: 2.4rem; height: 2.4rem; }
 .back-fab:active { transform: scale(0.92); }
 html.touch .pushed .page-header, html.touch .pushed .narrow-page .page-header { padding-left: 7rem; min-height: 4.4rem; }
-html.touch .osd-top .back-fab { position: relative; left: 0; top: 0; flex: none; margin-right: 1.4rem; }
+html.touch .osd-top .back-fab, html.platform-linux .osd-top .back-fab { position: relative; left: 0; top: 0; flex: none; margin-right: 1.4rem; }
 
 /* Player: smaller insets, icon-only buttons. */
 html.touch .osd-top { padding: 2rem 2rem 8rem; }
@@ -903,3 +904,16 @@ html.touch .still, html.touch .player-error { width: calc(100% - 3.2rem); left: 
   text-align: center; font-size: 1.8rem; font-weight: 650; color: #fff; padding: 0 2rem;
 }
 .cast-text .icon { color: var(--accent); margin-bottom: 1rem; }
+
+/* ---- the Linux app (jellyashy-desktop) ----------------------------------------
+   A translucent window: the page lets the window's own tinted background
+   through. Its title bar is drawn over the page (window buttons at the top
+   right, ~40 px): the logo sits on that line, and what is clickable at the
+   top keeps clear of it. */
+html.platform-linux, html.platform-linux body { background: transparent; }
+html.platform-linux .ambient-veil { background: radial-gradient(120% 90% at 70% 0%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.35) 78%); }
+html.platform-linux .sidebar { padding-top: 0.4rem; }
+html.platform-linux .side-brand { margin-bottom: 5.2rem; }
+html.platform-linux .back-fab { top: calc(1.2rem + 36px); }
+html.platform-linux .osd-top { padding-right: calc(4.5rem + 150px); }
+html.platform-linux .osd-top .back-fab { top: 0; }
