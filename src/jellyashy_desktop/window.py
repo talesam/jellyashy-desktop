@@ -127,6 +127,8 @@ class JellyAshyWindow(Adw.ApplicationWindow):
         settings.set_enable_developer_extras(bool(os.environ.get("JELLYASHY_DEVTOOLS")))
         settings.set_hardware_acceleration_policy(WebKit.HardwareAccelerationPolicy.ALWAYS)
         settings.set_enable_back_forward_navigation_gestures(False)
+        # The wheel and the touchpad glide (the lists scroll natively).
+        settings.set_enable_smooth_scrolling(True)
         # Transparent: the video shows through while one plays.
         web.set_background_color(Gdk.RGBA(red=0, green=0, blue=0, alpha=0))
         web.connect("decide-policy", self._on_policy)
