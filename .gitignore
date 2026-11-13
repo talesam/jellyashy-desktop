@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+/dist/
+/build/
+/pkgbuild/src/
+/pkgbuild/pkg/
+/pkgbuild/*.pkg.tar.*
+/pkgbuild/jellyashy-desktop/
+.pytest_cache/
+.ruff_cache/

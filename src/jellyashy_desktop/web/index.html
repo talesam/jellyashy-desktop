@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- The layout is designed for a 1920x1080 TV screen. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JellyAshy</title>
+  <link rel="stylesheet" href="styles.css">
+  
+</head>
+<body>
+  <!-- Start-up splash (shared/splash.svg), drawn before any script runs;
+       the app fades it out when its first screen is ready (ui/App.tsx). -->
+  <div id="boot"></div>
+  <!-- The blurred picture behind every screen (ui/theme.ts setAmbient). -->
+  <div id="ambient"></div>
+  <div class="ambient-veil"></div>
+  <div id="app"></div>
+  <script src="app.js"></script>
+</body>
+</html>

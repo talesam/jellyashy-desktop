@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.jellyashy.player</id>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  <name>JellyAshy</name>
+  <summary>Watch the movies and series of your Jellyfin server</summary>
+  <summary xml:lang="pt-BR">Assista aos filmes e séries do seu servidor Jellyfin</summary>
+  <description>
+    <p>
+      JellyAshy is a fast, good-looking client for Jellyfin, made for movies
+      and series. It works with any Jellyfin server and plays the files as
+      they are, with mpv: no work for the server.
+    </p>
+    <ul>
+      <li>Profiles for the family, with kids profiles</li>
+      <li>Continue watching, My list, recommendations and top 10</li>
+      <li>Skip intro and next episode</li>
+      <li>Subtitles from the server, audio tracks and playback speed</li>
+      <li>Sign in with a code from the phone (Quick Connect) or a password</li>
+      <li>28 languages</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">com.jellyashy.player.desktop</launchable>
+  <url type="homepage">https://jellyashy.talesam.org</url>
+  <url type="bugtracker">https://github.com/talesam/jellyashy-desktop/issues</url>
+  <url type="donation">https://jellyashy.talesam.org/#apoie</url>
+  <developer id="org.talesam">
+    <name>Tales A. Mendonça</name>
+  </developer>
+  <content_rating type="oars-1.1"/>
+  <requires>
+    <internet>always</internet>
+  </requires>
+  <supports>
+    <control>keyboard</control>
+    <control>pointing</control>
+  </supports>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/talesam/jellyashy-desktop/main/docs/screenshots/home.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/talesam/jellyashy-desktop/main/docs/screenshots/player.png</image>
+    </screenshot>
+  </screenshots>
+  <releases>
+    <release version="0.11.1" date="2026-11-13"/>
+  </releases>
+</component>
