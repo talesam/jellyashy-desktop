@@ -22,12 +22,6 @@ window.jellyashy-window { background: transparent; }
 headerbar.jellyashy-titlebar {
   background: transparent; box-shadow: none; min-height: 38px;
 }
-headerbar.jellyashy-titlebar button {
-  background-color: rgba(0, 0, 0, 0.35);
-}
-headerbar.jellyashy-titlebar button:hover {
-  background-color: rgba(255, 255, 255, 0.16);
-}
 """
 
 

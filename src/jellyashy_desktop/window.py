@@ -71,7 +71,8 @@ class JellyAshyWindow(Adw.ApplicationWindow):
         # comes back when the pointer goes up there.
         header = Adw.HeaderBar(show_title=False)
         header.add_css_class("jellyashy-titlebar")
-        full = Gtk.Button(icon_name="view-fullscreen-symbolic", tooltip_text="F11")
+        # Just the icon, like the window's own buttons beside it.
+        full = Gtk.Button(icon_name="view-fullscreen-symbolic", tooltip_text="F11", css_classes=["flat"])
         full.connect("clicked", lambda *_: self._toggle_fullscreen())
         header.pack_end(full)
         # Its left end stays free: the page's back arrow sits there.
