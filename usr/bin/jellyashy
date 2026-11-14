@@ -1,0 +1,5 @@
+#!/bin/sh
+# JellyAshy launcher (installed into /usr/bin by the package).
+# Never write __pycache__ into the system site-packages.
+export PYTHONDONTWRITEBYTECODE=1
+exec python3 -m jellyashy_desktop "$@"
