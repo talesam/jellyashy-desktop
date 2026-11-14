@@ -238,6 +238,10 @@ html[data-glass="real"] .panel {
 .card-sub { display: block; font-size: 1.05rem; color: var(--faint); margin-top: 0.15rem; height: 1.3rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .card:focus .poster, .card:focus .thumb, .card:focus .person-photo { transform: scale(1.07); box-shadow: 0 0 0 0.25rem var(--accent); }
 .card:focus .card-title { color: var(--fg); }
+/* The grown picture reaches 0.7rem lower: its title steps down with it. */
+.card-title, .card-sub { transition: transform 0.16s ease; }
+.card:focus .card-title, .card:focus .card-sub { transform: translateY(0.75rem); }
+.continue-card:focus .card-title, .continue-card:focus .card-sub { transform: translateY(0.55rem); }
 .placeholder .poster { background: var(--bg-2); }
 .badge {
   position: absolute; right: 0.6rem; top: 0.6rem; min-width: 2rem; height: 2rem; padding: 0 0.4rem; box-sizing: border-box;
@@ -824,6 +828,7 @@ html.touch .toggle:focus .switch { background: var(--glass-hi); }
 html.touch .toggle.on:focus .switch { background: var(--accent); }
 html.touch .card:focus .poster, html.touch .card:focus .thumb, html.touch .card:focus .person-photo { transform: none; box-shadow: none; }
 html.touch .card:focus .card-title { color: var(--fg-2); }
+html.touch .card:focus .card-title, html.touch .card:focus .card-sub { transform: none; }
 html.touch .card:active .poster, html.touch .card:active .thumb { transform: scale(0.97); }
 html.touch .rank-card:focus .rank-num { -webkit-text-stroke-color: rgba(255, 255, 255, 0.55); }
 html.touch .more-card:focus { transform: none; box-shadow: none; color: var(--fg-2); background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03)); }
