@@ -236,7 +236,14 @@ html[data-glass="real"] .panel {
 .card-title.marquee { text-overflow: clip; }
 .card-title .mq { display: inline-block; }
 .card-sub { display: block; font-size: 1.05rem; color: var(--faint); margin-top: 0.15rem; height: 1.3rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.card:focus .poster, .card:focus .thumb, .card:focus .person-photo { transform: scale(1.07); box-shadow: 0 0 0 0.25rem var(--accent); }
+.card:focus .poster, .card:focus .thumb, .card:focus .person-photo { transform: scale(1.07); }
+/* The frame is drawn over the picture's edge, inside the same box: a shadow
+   around it is rasterised apart, and WebKit (the Linux app) rounded the two
+   differently once scaled, leaving the frame thicker on one side. */
+.card:focus .poster::after, .card:focus .thumb::after, .card:focus .person-photo::after {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 3;
+  border: 0.25rem solid var(--accent); border-radius: inherit; pointer-events: none;
+}
 .card:focus .card-title { color: var(--fg); }
 /* The grown picture reaches 0.7rem lower: its title steps down with it. */
 .card-title, .card-sub { transition: transform 0.16s ease; }
@@ -827,6 +834,7 @@ html.touch .row:active { background: var(--glass); }
 html.touch .toggle:focus .switch { background: var(--glass-hi); }
 html.touch .toggle.on:focus .switch { background: var(--accent); }
 html.touch .card:focus .poster, html.touch .card:focus .thumb, html.touch .card:focus .person-photo { transform: none; box-shadow: none; }
+html.touch .card:focus .poster::after, html.touch .card:focus .thumb::after, html.touch .card:focus .person-photo::after { content: none; }
 html.touch .card:focus .card-title { color: var(--fg-2); }
 html.touch .card:focus .card-title, html.touch .card:focus .card-sub { transform: none; }
 html.touch .card:active .poster, html.touch .card:active .thumb { transform: scale(0.97); }
