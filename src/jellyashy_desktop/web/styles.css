@@ -112,6 +112,21 @@ html[data-glass="real"] .panel {
 .page-header h1 { font-size: 2.6rem; }
 .page-header .count { margin-left: 1rem; color: var(--muted); font-size: 1.4rem; }
 .page-header .btn { margin-left: 1rem; }
+/* Movies / Series: filters by genre and theme between the title and the grid. */
+.genre-chips { flex: none; padding: 0.6rem 0 1rem 4.5rem; margin-top: -0.8rem; }
+.genre-chips .cat-card { margin-right: 1rem; }
+/* Category cards: a title's picture, the category's colour over it, its name. */
+.cat-card { width: 24rem; height: 13.5rem; margin-right: 1.6rem; border-radius: 1rem; overflow: hidden; transition: transform 0.15s; }
+.cat-card .cat-pic { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+.cat-card .cat-tint { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+.cat-card .cat-label { position: absolute; left: 1.2rem; right: 1.2rem; top: 50%; transform: translateY(-50%); text-align: center; font-size: 2.1rem; font-weight: 800; line-height: 1.05; letter-spacing: 0.03em; text-transform: uppercase; color: #fff; }
+.cat-card.small { width: 16.5rem; height: 9.3rem; border-radius: 0.8rem; }
+.cat-card.small .cat-label { font-size: 1.4rem; left: 0.8rem; right: 0.8rem; }
+.cat-card:focus { transform: scale(1.07); box-shadow: 0 0 0 0.25rem var(--accent); }
+/* The filter in use: a white frame (the focused one keeps the accent). */
+.cat-card.active { box-shadow: 0 0 0 0.25rem #fff; }
+.cat-card.active:focus { box-shadow: 0 0 0 0.25rem var(--accent); }
+.kind-category .rail-empty { height: 13.5rem; }
 .detail-page .page-header, .person-page { padding-top: 0; }
 .page-center { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
 .narrow-page { padding: 5rem 0 3rem; align-items: center; }
@@ -719,6 +734,14 @@ html.touch .library-page, html.touch .mylist-page, html.touch .settings-page, ht
 html.touch .page-header { padding: 0 1.6rem 1.2rem; flex-wrap: wrap; }
 html.touch .page-header h1 { font-size: 2.3rem; }
 html.touch .page-header .btn { margin: 0.4rem 0.6rem 0.4rem 0; }
+html.touch .genre-chips { padding-left: 1.6rem; margin-top: -0.4rem; }
+html.touch .cat-card { width: 15rem; height: 8.4rem; margin-right: 0.8rem; }
+html.touch .cat-card .cat-label { font-size: 1.3rem; left: 0.6rem; right: 0.6rem; }
+html.touch .cat-card.small { width: 11.5rem; height: 6.5rem; }
+html.touch .cat-card.small .cat-label { font-size: 1.05rem; }
+html.touch .cat-card:focus { transform: none; box-shadow: none; }
+html.touch .cat-card.active, html.touch .cat-card.active:focus { box-shadow: 0 0 0 0.2rem #fff; }
+html.touch .kind-category .rail-empty { height: 8.4rem; }
 html.touch .page-header h1 + .count, html.touch .page-header .count { margin-right: auto; }
 html.touch .pad, html.touch .tagline, html.touch .overview, html.touch .facts { padding: 0 1.6rem; }
 html.touch .rail-title, html.touch .browse-page .rail-title { margin-left: 1.6rem; }
