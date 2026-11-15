@@ -348,7 +348,8 @@ html[data-glass="real"] .panel {
 .fact { font-size: 1.25rem; margin-bottom: 0.4rem; }
 .fact-k { color: var(--muted); margin-right: 0.8rem; }
 .episodes { margin-bottom: 2.4rem; }
-.season-tabs { padding: 0.5rem 0 0.5rem 4.5rem; margin-bottom: 0.6rem; }
+/* Room under the tabs: a focused episode grows up towards them. */
+.season-tabs { padding: 0.5rem 0 0.5rem 4.5rem; margin-bottom: 1.4rem; }
 .season-tabs .btn { margin-right: 0.8rem; }
 .episode-card { width: 26.25rem; margin-right: 1.6rem; }
 .ep-title { display: block; margin-top: 0.8rem; font-size: 1.3rem; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
