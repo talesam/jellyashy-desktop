@@ -40,6 +40,16 @@ SHIM = """
     playerStatus: function () { return JSON.stringify(status); },
     playerTracks: function () { return JSON.stringify(tracks); }
   };
+  // F toggles full screen, as in video players (F11 is the window's own).
+  // Not while typing: a search or a sign-in field takes the letter.
+  document.addEventListener("keydown", function (e) {
+    if ((e.key !== "f" && e.key !== "F") || e.ctrlKey || e.altKey || e.metaKey || e.repeat) return;
+    var t = e.target;
+    var tag = t && t.tagName;
+    if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (t && t.isContentEditable)) return;
+    e.preventDefault();
+    post({ cmd: "fullscreen" });
+  }, true);
 })();
 """
 
@@ -67,7 +77,7 @@ class Load:
     extra: dict = field(default_factory=dict)
 
 
-COMMANDS = {"exit", "load", "play", "pause", "stop", "seek", "rate", "audio", "aspect"}
+COMMANDS = {"exit", "load", "play", "pause", "stop", "seek", "rate", "audio", "aspect", "fullscreen"}
 
 
 def parse_message(text: str) -> Command | None:

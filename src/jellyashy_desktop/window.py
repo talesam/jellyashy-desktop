@@ -72,7 +72,7 @@ class JellyAshyWindow(Adw.ApplicationWindow):
         header = Adw.HeaderBar(show_title=False)
         header.add_css_class("jellyashy-titlebar")
         # Just the icon, like the window's own buttons beside it.
-        full = Gtk.Button(icon_name="view-fullscreen-symbolic", tooltip_text="F11", css_classes=["flat"])
+        full = Gtk.Button(icon_name="view-fullscreen-symbolic", tooltip_text="F / F11", css_classes=["flat"])
         full.connect("clicked", lambda *_: self._toggle_fullscreen())
         header.pack_end(full)
         # Its left end stays free: the page's back arrow sits there.
@@ -199,6 +199,8 @@ class JellyAshyWindow(Adw.ApplicationWindow):
             self.video.set_aspect(str(arg))
         elif cmd == "exit":
             self.close()
+        elif cmd == "fullscreen":
+            self._toggle_fullscreen()
 
     # ---- the player's news to the page --------------------------------------
 
