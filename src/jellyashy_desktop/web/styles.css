@@ -714,14 +714,14 @@ html[data-glass="real"] .sidebar.open .side-panel {
 html.touch { font-size: calc(6px + 1.2vmin); }
 /* The lists scroll natively under a finger (nav.ts): the system's own
    scrolling and fling, no transform moving them. */
-html.touch .tscroll, html.platform-linux .tscroll {
+html.touch .tscroll, html.platform-linux .tscroll, html.desktop .tscroll {
   overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain; scrollbar-width: none;
 }
 /* Sideways only: an up or down drag on a rail goes on to the page. */
-html.touch .tscroll.tscroll-x, html.platform-linux .tscroll.tscroll-x { overflow-x: auto; overflow-y: hidden; overscroll-behavior-y: auto; overscroll-behavior-x: contain; }
-html.touch .tscroll::-webkit-scrollbar, html.platform-linux .tscroll::-webkit-scrollbar { display: none; }
-html.touch .tscroll > .tscroll-inner, html.platform-linux .tscroll > .tscroll-inner { transition: none; will-change: auto; }
+html.touch .tscroll.tscroll-x, html.platform-linux .tscroll.tscroll-x, html.desktop .tscroll.tscroll-x { overflow-x: auto; overflow-y: hidden; overscroll-behavior-y: auto; overscroll-behavior-x: contain; }
+html.touch .tscroll::-webkit-scrollbar, html.platform-linux .tscroll::-webkit-scrollbar, html.desktop .tscroll::-webkit-scrollbar { display: none; }
+html.touch .tscroll > .tscroll-inner, html.platform-linux .tscroll > .tscroll-inner, html.desktop .tscroll > .tscroll-inner { transition: none; will-change: auto; }
 html.touch .focusable { -webkit-tap-highlight-color: transparent; }
 html.touch .btn .spinner.small { margin-right: 0.7rem; }
 
@@ -856,7 +856,7 @@ html.touch .input:focus { border-color: var(--accent); }
 .back-fab .icon { width: 2.4rem; height: 2.4rem; }
 .back-fab:active { transform: scale(0.92); }
 html.touch .pushed .page-header, html.touch .pushed .narrow-page .page-header { padding-left: 7rem; min-height: 4.4rem; }
-html.touch .osd-top .back-fab, html.platform-linux .osd-top .back-fab { position: relative; left: 0; top: 0; flex: none; margin-right: 1.4rem; }
+html.touch .osd-top .back-fab, html.platform-linux .osd-top .back-fab, html.desktop .osd-top .back-fab { position: relative; left: 0; top: 0; flex: none; margin-right: 1.4rem; }
 
 /* Player: smaller insets, icon-only buttons. */
 html.touch .osd-top { padding: 2rem 2rem 8rem; }
@@ -961,3 +961,13 @@ html.platform-linux .back-fab .icon { width: 20px; height: 20px; }
 html.platform-linux .osd-top { padding-right: calc(4.5rem + 150px); }
 html.platform-linux .osd-top .back-fab { top: 0; left: 0; width: 4.4rem; height: 4.4rem; }
 html.platform-linux .osd-top .back-fab .icon { width: 2.4rem; height: 2.4rem; }
+
+/* Settings → Hidden titles: a small poster (64 px tall at 1920) beside each name. */
+.hidden-thumb {
+  flex: none; width: 2.67rem; height: 4rem; margin-right: 1.1rem; border-radius: 0.35rem;
+  overflow: hidden; background: rgba(255, 255, 255, 0.08);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; font-weight: 700; color: var(--muted);
+}
+.hidden-thumb img, .hidden-thumb .img-fallback, .hidden-thumb .img-pending { width: 100%; height: 100%; object-fit: cover; }
+.hidden-thumb .img-fallback { display: flex; align-items: center; justify-content: center; }
