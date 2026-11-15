@@ -354,6 +354,7 @@ html[data-glass="real"] .panel {
 .episode-card { width: 26.25rem; margin-right: 1.6rem; }
 .ep-title { display: block; margin-top: 0.8rem; font-size: 1.3rem; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ep-sub { display: block; font-size: 1.05rem; color: var(--faint); margin-top: 0.2rem; }
+.ep-sub .star .icon { width: 1.1rem; height: 1.1rem; margin-right: 0.2rem; vertical-align: -0.15rem; }
 .ep-plot { display: block; font-size: 1.1rem; color: var(--muted); margin-top: 0.4rem; line-height: 1.4; height: 4.6rem; overflow: hidden; }
 
 .person-head { display: flex; align-items: center; padding: 10rem 4.5rem 3rem; }
