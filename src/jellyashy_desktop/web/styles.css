@@ -615,6 +615,7 @@ html[data-glass="real"] .sidebar.open .side-panel {
 }
 .cue.size-small { font-size: 1.9rem; }
 .cue.size-large { font-size: 3.1rem; }
+.cue:empty { display: none; }
 .with-panel .cue { transform: translateY(-11rem); }
 .player-error { position: absolute; left: 50%; top: 50%; width: 60rem; margin-left: -30rem; transform: translateY(-50%); padding: 3rem; box-sizing: border-box; text-align: center; background: rgba(15, 17, 24, 0.92); }
 .player-error h2 { font-size: 1.9rem; margin: 1rem 0 0.6rem; }
