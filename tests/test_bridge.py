@@ -43,3 +43,9 @@ def test_a_title_cannot_break_out_of_the_script():
     s = bridge.event_script({"type": "error", "message": "x\"); alert(1); (\"", "detail": "</script>"})
     payload = s[s.index("(") + 1:-1]
     assert json.loads(payload)["message"] == "x\"); alert(1); (\""
+
+
+def test_fullscreen_is_a_command():
+    # The F key (bridge shim) asks the window for full screen.
+    assert bridge.parse_message('{"cmd": "fullscreen"}').cmd == "fullscreen"
+    assert "fullscreen" in bridge.shim({})

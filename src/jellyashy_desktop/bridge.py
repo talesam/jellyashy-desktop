@@ -21,9 +21,13 @@ SHIM = """
   var status = { pos: 0, dur: 0, buf: 0 };
   var tracks = [];
   var info = %(info)s;
+  var cast = { available: true, state: "none", device: "", kind: "cast" };
+  var devices = [];
   window.__jellyashyNative = {
     status: function (s) { status = s; },
-    tracks: function (t) { tracks = t; }
+    tracks: function (t) { tracks = t; },
+    cast: function (c) { cast = c; },
+    devices: function (d) { devices = d; }
   };
   window.JellyAshyLinux = {
     info: function () { return JSON.stringify(info); },
@@ -38,8 +42,24 @@ SHIM = """
     playerAudio: function (id) { post({ cmd: "audio", arg: id }); },
     playerAspect: function (m) { post({ cmd: "aspect", arg: m }); },
     playerStatus: function () { return JSON.stringify(status); },
-    playerTracks: function () { return JSON.stringify(tracks); }
+    playerTracks: function () { return JSON.stringify(tracks); },
+    castInfo: function () { return JSON.stringify(cast); },
+    castDevices: function () { return JSON.stringify(devices); },
+    castScan: function (on) { post({ cmd: "castscan", arg: !!on }); },
+    castConnect: function (id) { post({ cmd: "castconnect", arg: String(id) }); },
+    castDisconnect: function () { post({ cmd: "castoff" }); },
+    castSubtitle: function () {}
   };
+  // F toggles full screen, as in video players (F11 is the window's own).
+  // Not while typing: a search or a sign-in field takes the letter.
+  document.addEventListener("keydown", function (e) {
+    if ((e.key !== "f" && e.key !== "F") || e.ctrlKey || e.altKey || e.metaKey || e.repeat) return;
+    var t = e.target;
+    var tag = t && t.tagName;
+    if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (t && t.isContentEditable)) return;
+    e.preventDefault();
+    post({ cmd: "fullscreen" });
+  }, true);
 })();
 """
 
@@ -67,7 +87,8 @@ class Load:
     extra: dict = field(default_factory=dict)
 
 
-COMMANDS = {"exit", "load", "play", "pause", "stop", "seek", "rate", "audio", "aspect"}
+COMMANDS = {"exit", "load", "play", "pause", "stop", "seek", "rate", "audio", "aspect", "fullscreen",
+            "castscan", "castconnect", "castoff"}
 
 
 def parse_message(text: str) -> Command | None:
@@ -107,6 +128,15 @@ def status_script(status: dict, tracks: list | None = None) -> str:
     parts = [f"{native}.status({json.dumps(status)})"]
     if tracks is not None:
         parts.append(f"{native}.tracks({json.dumps(tracks)})")
+    return ";".join(parts)
+
+
+def cast_script(info: dict, devices: list | None = None) -> str:
+    """JavaScript that updates what castInfo/castDevices answer."""
+    native = "window.__jellyashyNative&&window.__jellyashyNative"
+    parts = [f"{native}.cast({json.dumps(info)})"]
+    if devices is not None:
+        parts.append(f"{native}.devices({json.dumps(devices)})")
     return ";".join(parts)
 
 

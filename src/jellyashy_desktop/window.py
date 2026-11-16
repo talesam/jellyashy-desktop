@@ -10,6 +10,7 @@ from gi.repository import Adw, Gdk, GLib, Gtk, WebKit
 
 from . import APP_NAME, APP_VERSION, bridge
 from .player import VideoView
+from .remote import Remotes
 
 WEB_DIR = Path(__file__).parent / "web"
 # How often the page learns the position while a video is open.
@@ -53,6 +54,11 @@ class JellyAshyWindow(Adw.ApplicationWindow):
 
         user_agent = f"{APP_NAME}/{APP_VERSION} (Linux)"
         self.video = VideoView(user_agent)
+        # TVs the videos can go to (Chromecast, DLNA): the page's TV button.
+        self.remotes = Remotes(self._on_remote_event)
+        self._casting = False
+        self._devices_source = 0
+        self._remote_status_source = 0
         self.video.set_visible(False)
         self.video.connect("state-changed", self._on_state)
         self.video.connect("tracks-changed", self._on_tracks)
@@ -72,7 +78,7 @@ class JellyAshyWindow(Adw.ApplicationWindow):
         header = Adw.HeaderBar(show_title=False)
         header.add_css_class("jellyashy-titlebar")
         # Just the icon, like the window's own buttons beside it.
-        full = Gtk.Button(icon_name="view-fullscreen-symbolic", tooltip_text="F11", css_classes=["flat"])
+        full = Gtk.Button(icon_name="view-fullscreen-symbolic", tooltip_text="F / F11", css_classes=["flat"])
         full.connect("clicked", lambda *_: self._toggle_fullscreen())
         header.pack_end(full)
         # Its left end stays free: the page's back arrow sits there.
@@ -178,19 +184,35 @@ class JellyAshyWindow(Adw.ApplicationWindow):
             load = bridge.parse_load(arg)
             if load is None:
                 return
+            if self.remotes.connected:
+                # A TV plays it: the window only keeps the controls.
+                meta = load.extra.get("cast") or {}
+                self.video.stop()
+                self.video.set_visible(False)
+                self._casting = True
+                self.remotes.load(load.url, str(meta.get("title") or ""), load.start, str(meta.get("image") or ""))
+                self._start_remote_status()
+                return
+            if self._casting:
+                self._casting = False
+                self.remotes.stop()
             self.video.set_visible(True)
             self.video.load(load.url, load.start, load.user_agent)
             self._start_status()
         elif cmd == "stop":
+            if self._casting:
+                self._casting = False
+                self.remotes.stop()
+                self._stop_remote_status()
             self.video.stop()
             self.video.set_visible(False)
             self._stop_status()
         elif cmd == "play":
-            self.video.play()
+            (self.remotes if self._casting else self.video).play()
         elif cmd == "pause":
-            self.video.pause()
+            (self.remotes if self._casting else self.video).pause()
         elif cmd == "seek":
-            self.video.seek(bridge.to_number(arg))
+            (self.remotes if self._casting else self.video).seek(bridge.to_number(arg))
         elif cmd == "rate":
             self.video.set_rate(bridge.to_number(arg, 1.0))
         elif cmd == "audio":
@@ -199,6 +221,53 @@ class JellyAshyWindow(Adw.ApplicationWindow):
             self.video.set_aspect(str(arg))
         elif cmd == "exit":
             self.close()
+        elif cmd == "fullscreen":
+            self._toggle_fullscreen()
+        elif cmd == "castscan":
+            self.remotes.scan(bool(arg))
+            if arg and not self._devices_source:
+                self._push_devices()
+                self._devices_source = GLib.timeout_add(1000, self._push_devices)
+            elif not arg and self._devices_source:
+                GLib.source_remove(self._devices_source)
+                self._devices_source = 0
+        elif cmd == "castconnect":
+            self.remotes.connect(str(arg))
+        elif cmd == "castoff":
+            self.remotes.disconnect()
+
+    # ---- TVs ----------------------------------------------------------------
+
+    def _on_remote_event(self, event: dict) -> bool:
+        if event.get("type") == "cast":
+            self._run(bridge.cast_script(self.remotes.info()))
+            if event.get("state") == "none" and self._casting:
+                self._casting = False
+                self._stop_remote_status()
+        elif event.get("type") == "state":
+            self._set_inhibit(False)
+        self._run(bridge.event_script(event))
+        return False
+
+    def _push_devices(self) -> bool:
+        self._run(bridge.cast_script(self.remotes.info(), self.remotes.devices()))
+        return GLib.SOURCE_CONTINUE
+
+    def _start_remote_status(self) -> None:
+        if not self._remote_status_source:
+            self._remote_status_source = GLib.timeout_add(_STATUS_MS, self._push_remote_status)
+
+    def _stop_remote_status(self) -> None:
+        if self._remote_status_source:
+            GLib.source_remove(self._remote_status_source)
+            self._remote_status_source = 0
+
+    def _push_remote_status(self) -> bool:
+        if not self._casting:
+            self._remote_status_source = 0
+            return GLib.SOURCE_REMOVE
+        self._run(bridge.status_script(self.remotes.status()))
+        return GLib.SOURCE_CONTINUE
 
     # ---- the player's news to the page --------------------------------------
 
@@ -277,6 +346,7 @@ class JellyAshyWindow(Adw.ApplicationWindow):
         return True
 
     def _on_close(self, _window) -> bool:
+        self.remotes.shutdown()
         self._stop_status()
         self._set_inhibit(False)
         self.video.terminate()
