@@ -251,7 +251,7 @@ html[data-glass="real"] .panel {
 .continue-card:focus .card-title, .continue-card:focus .card-sub { transform: translateY(0.55rem); }
 .placeholder .poster { background: var(--bg-2); }
 .badge {
-  position: absolute; right: 0.6rem; top: 0.6rem; min-width: 2rem; height: 2rem; padding: 0 0.4rem; box-sizing: border-box;
+  position: absolute; left: 0.6rem; top: 0.6rem; min-width: 2rem; height: 2rem; padding: 0 0.4rem; box-sizing: border-box;
   border-radius: 1rem; display: flex; align-items: center; justify-content: center;
   background: rgba(0, 0, 0, 0.65); color: var(--fg); font-size: 1rem; font-weight: 700;
 }
@@ -330,6 +330,7 @@ html[data-glass="real"] .panel {
   font-size: 1.35rem; line-height: 1.5; color: var(--fg-2); margin-top: 1.1rem; max-height: 4.05rem; overflow: hidden;
   transition: opacity 0.25s;
 }
+.hero-episode { margin: 0.4rem 0 0.8rem; font-size: 1.8rem; font-weight: 700; }
 .hero-actions { position: absolute; left: 4.5rem; top: 35.5rem; display: flex; z-index: 2; transition: opacity 0.25s; }
 .hero-actions .btn { margin-right: 1rem; }
 .empty-hero { height: 30rem; }
@@ -543,6 +544,12 @@ html[data-glass="real"] .sidebar.open .side-panel {
 .kind-rank .rail-empty { height: 23.6rem; }
 .kind-big .rail-empty { height: 42rem; }
 
+/* A card's ⋮ (cardMenu.tsx): always on a phone, on the focused card with a
+   remote (the sign that a long OK has more), under a mouse. */
+.card-more { display: none; position: absolute; right: 0.7rem; top: 0.7rem; z-index: 2; width: 2.6rem; height: 2.6rem; box-sizing: border-box; border-radius: 50%; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.22); border: 0.1rem solid rgba(255, 255, 255, 0.28); color: rgba(255, 255, 255, 0.92); cursor: pointer; }
+.card-more .icon { width: 1.8rem; height: 1.8rem; }
+.card:focus .card-more, html.touch .card-more, html.pointer .card:hover .card-more { display: flex; }
+.card-more:active { background: rgba(255, 255, 255, 0.3); }
 .continue-card { width: 26.25rem; margin-right: 1.6rem; }
 .continue-card .thumb { width: 26.25rem; height: 14.75rem; }
 .rank-card { display: flex; align-items: flex-end; width: 23.5rem; margin-right: 1.2rem; }
@@ -819,7 +826,16 @@ html.touch .hero-info, html.touch .detail-page .hero-info { left: 1.6rem; top: a
 html.touch .hero-title { font-size: 3.2rem; }
 html.touch .hero-logo { height: 6rem; width: 24rem; }
 html.touch .hero-plot { display: none; }
-html.touch .detail-actions { margin: -5.5rem 0 2rem 1.6rem; flex-wrap: wrap; }
+/* As streaming apps on a phone: one wide Play, the rest as icons with a
+   word under them (side by side they wrapped into two cramped rows). */
+html.touch .detail-actions { margin: -5.5rem 1.6rem 2rem; flex-wrap: wrap; }
+html.touch .detail-actions .btn { flex: 1 1 0; flex-direction: column; justify-content: flex-start; height: auto; min-width: 0; margin: 0; padding: 0.6rem 0.2rem; background: transparent; font-size: 1.1rem; font-weight: 500; color: var(--fg-2); white-space: normal; text-align: center; }
+html.touch .detail-actions .btn .icon { margin: 0 0 0.5rem; width: 2.4rem; height: 2.4rem; }
+html.touch .detail-actions .btn.active .icon { color: var(--accent); }
+html.touch .detail-actions .btn.primary { flex: 1 1 100%; flex-direction: row; justify-content: center; height: 4.6rem; margin-bottom: 1.4rem; border-radius: var(--radius-sm); background: var(--fg); color: var(--bg); font-size: 1.5rem; font-weight: 700; }
+html.touch .detail-actions .btn.primary .icon { margin: 0 0.8rem 0 0; }
+html.touch .detail-actions .btn:focus { background: transparent; color: var(--fg-2); }
+html.touch .detail-actions .btn.primary:focus { background: var(--fg); color: var(--bg); }
 
 /* Focus looks of the remote, off for a finger (the press feedback stays). */
 html.touch .btn:focus { background: var(--glass-hi); color: var(--fg); transform: none; }
